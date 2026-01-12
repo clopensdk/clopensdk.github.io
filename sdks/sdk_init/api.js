@@ -4,6 +4,7 @@ registerAPI({
   method: "POST",
   endpoint: "http://localhost:65535/sdk/init",
   description: "初始化SDK，获取必要的配置信息。",
+  apiType: "webapi", // 'webapi' 或 'c'
   flowchart: `graph TB
         %% Top-level controller / API
         A["main<br/>控制器 / API<br/><i>http-port: 65535</i>"]
@@ -89,12 +90,6 @@ registerAPI({
       required: true,
       description: "商户密钥",
     },
-    {
-      name: "data_dir",
-      type: "string",
-      required: true,
-      description: "数据目录路径，用于存储SDK相关数据",
-    },
   ],
   response: [
     {
@@ -113,14 +108,29 @@ registerAPI({
       description: "返回结果",
     },
     {
-      name: "company",
+      name: "result.company",
       type: "string",
       description: "商户名称",
     },
     {
-      name: "branding",
+      name: "result.branding",
       type: "string",
       description: "品牌标识",
+    },
+    {
+      name: "result.data_dir",
+      type: "string",
+      description: "数据目录",
+    },
+    {
+      name: "result.tips",
+      type: "array",
+      description: "提示信息",
+    },
+    {
+      name: "result.warns",
+      type: "array",
+      description: "警告信息",
     },
   ],
   example: {
@@ -129,18 +139,18 @@ registerAPI({
         api_key: "cl_live_6f8d1b4ea0c64d9b8a2d3e5f7c9a1b2c",
         api_secret:
           "sec_8cdd81fe2e7b4c5aa13e30b67f9d2a6c3e4b5d6f1a2b3c4d5e6f7a8b9c0d1e2",
-        data_dir: "C:/Users/Administrator/AppData/Roaming/Clsdk",
       },
     },
     response: {
       code: 0,
       msg: "ok ",
       result: {
-        sdk: {
-          company: "Starlink",
-          branding: "X",
-        },
+        company: "SpaceX",
+        branding: "Starship | Starlink",
+        data_dir: "C:\\Users\\Administrator\\AppData\\Roaming\\SpaceX",
       },
+      tips: [],
+      warns: [],
     },
   },
 });

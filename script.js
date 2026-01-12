@@ -118,9 +118,15 @@ class API {
 
                         <div class="api-section">
                             <h2>请求示例</h2>
-                            <div class="code-block">${this.formatCode(
+                            <div class="code-wrapper">
+                                <button class="copy-btn" onclick="copyCode(this)" title="复制代码">
+                                    <span class="copy-icon">📋</span>
+                                    <span class="copy-text">复制</span>
+                                </button>
+                                <pre class="code-block">${this.formatCode(
                               this.example.request
-                            )}</div>
+                            )}</pre>
+                            </div>
                         </div>
                     </div>
 
@@ -154,9 +160,15 @@ class API {
 
                         <div class="api-section">
                             <h2>返回示例</h2>
-                            <div class="code-block">${this.formatCode(
+                            <div class="code-wrapper">
+                                <button class="copy-btn" onclick="copyCode(this)" title="复制代码">
+                                    <span class="copy-icon">📋</span>
+                                    <span class="copy-text">复制</span>
+                                </button>
+                                <pre class="code-block">${this.formatCode(
                               this.example.response
-                            )}</div>
+                            )}</pre>
+                            </div>
                         </div>
                     </div>
 
@@ -303,9 +315,15 @@ class API {
 
                             <div class="api-section">
                                 <h2>C API调用示例</h2>
-                                <div class="code-block">${this.formatCode(
+                                <div class="code-wrapper">
+                                    <button class="copy-btn" onclick="copyCode(this)" title="复制代码">
+                                        <span class="copy-icon">📋</span>
+                                        <span class="copy-text">复制</span>
+                                    </button>
+                                    <pre class="code-block">${this.formatCode(
                                   this.example.request
-                                )}</div>
+                                )}</pre>
+                                </div>
                             </div>
                         </div>
 
@@ -339,9 +357,15 @@ class API {
 
                             <div class="api-section">
                                 <h2>返回示例</h2>
-                                <div class="code-block">${this.formatCode(
+                                <div class="code-wrapper">
+                                    <button class="copy-btn" onclick="copyCode(this)" title="复制代码">
+                                        <span class="copy-icon">📋</span>
+                                        <span class="copy-text">复制</span>
+                                    </button>
+                                    <pre class="code-block">${this.formatCode(
                                   this.example.response
-                                )}</div>
+                                )}</pre>
+                                </div>
                             </div>
                         </div>
 
@@ -448,20 +472,30 @@ class API {
     }
 
     // HTML转义
-    code = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    code = code
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
 
-    // 简单的JSON语法高亮
-    code = code.replace(/(".*?")\s*:/g, '<span class="json-key">$1</span>:'); // 键名
-    code = code.replace(
-      /:\s*(".*?")/g,
-      ': <span class="json-string">$1</span>'
-    ); // 字符串值
-    code = code.replace(/:\s*(\d+)/g, ': <span class="json-number">$1</span>'); // 数字
-    code = code.replace(
-      /:\s*(true|false)/g,
-      ': <span class="json-boolean">$1</span>'
-    ); // 布尔值
-    code = code.replace(/:\s*(null)/g, ': <span class="json-null">$1</span>'); // null
+    // 增强的 JSON 语法高亮
+    // 1. 高亮键名（带引号的键）
+    code = code.replace(/("[\w_-]+")\s*:/g, '<span class="json-key">$1</span>:');
+    
+    // 2. 高亮字符串值（冒号后的引号字符串）
+    code = code.replace(/:\s*("(?:[^"\\]|\\.)*")/g, ': <span class="json-string">$1</span>');
+    
+    // 3. 高亮数字（整数和浮点数）
+    code = code.replace(/:\s*(-?\d+\.?\d*)/g, ': <span class="json-number">$1</span>');
+    
+    // 4. 高亮布尔值
+    code = code.replace(/:\s*\b(true|false)\b/g, ': <span class="json-boolean">$1</span>');
+    
+    // 5. 高亮 null
+    code = code.replace(/:\s*\b(null)\b/g, ': <span class="json-null">$1</span>');
+    
+    // 6. 高亮括号和逗号
+    code = code.replace(/([{}\[\]])/g, '<span class="json-punctuation">$1</span>');
+    code = code.replace(/,(?=\s*[\n\r])/g, '<span class="json-punctuation">,</span>');
 
     return code;
   }
@@ -953,6 +987,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }, 100); // 等待100ms让所有script标签加载完成
 });
+
+// 复制代码功能
+window.copyCode = function(button) {
+  const codeWrapper = button.closest('.code-wrapper');
+  const codeBlock = codeWrapper.querySelector('.code-block');
+  
+  // 获取纯文本内容（去除HTML标签）
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = codeBlock.innerHTML;
+  const textContent = tempDiv.textContent || tempDiv.innerText;
+  
+  // 复制到剪贴板
+  navigator.clipboard.writeText(textContent).then(() => {
+    // 显示复制成功提示
+    const copyText = button.querySelector('.copy-text');
+    const originalText = copyText.textContent;
+    copyText.textContent = '已复制!';
+    button.classList.add('copied');
+    
+    // 2秒后恢复原状
+    setTimeout(() => {
+      copyText.textContent = originalText;
+      button.classList.remove('copied');
+    }, 2000);
+  }).catch(err => {
+    console.error('复制失败:', err);
+    alert('复制失败，请手动复制');
+  });
+};
 
 // Markdown 渲染工具函数
 window.renderMarkdown = function(markdownText) {
