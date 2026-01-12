@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown 演示 - ChenLian®开放平台</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">ChenLian®开放平台</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="overview.html">概述</a></li>
+                <li><a href="docs.html">API文档</a></li>
+                <li><a href="markdown-demo.html" class="active">Markdown演示</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="docs-container">
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h3>示例列表</h3>
+                <ul class="api-list">
+                    <li><a href="#" onclick="loadExample('api'); return false;">API文档示例</a></li>
+                    <li><a href="#" onclick="loadExample('tutorial'); return false;">教程示例</a></li>
+                    <li><a href="#" onclick="loadExample('changelog'); return false;">更新日志示例</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="content">
+            <div id="markdownContent" class="markdown-body">
+                <h1>Markdown 渲染演示</h1>
+                <p>这个页面演示了如何使用 Markdown 渲染功能。点击左侧的示例查看不同的 Markdown 文档。</p>
+                
+                <h2>功能特性</h2>
+                <ul>
+                    <li>✅ 支持 GitHub Flavored Markdown (GFM)</li>
+                    <li>✅ 代码语法高亮</li>
+                    <li>✅ 表格渲染</li>
+                    <li>✅ 任务列表</li>
+                    <li>✅ 自动链接</li>
+                </ul>
+
+                <h2>使用方法</h2>
+                <p>在 JavaScript 中调用渲染函数：</p>
+                <pre><code>// 方法1: 渲染到指定元素
+window.renderMarkdownDoc(markdownText, 'elementId');
+
+// 方法2: 获取渲染后的 HTML
+const html = window.renderMarkdown(markdownText);
+document.getElementById('myDiv').innerHTML = html;</code></pre>
+            </div>
+        </main>
+    </div>
+
+    <script src="footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        const examples = {
+            api: `# API 接口文档
+
+## 概述
+
+这是一个 RESTful API 接口文档示例。
+
+## 认证
+
+所有请求需要在 Header 中包含认证信息：
+
+\`\`\`http
+Authorization: Bearer YOUR_API_KEY
+\`\`\`
+
+## 接口列表
+
+### 1. 获取用户信息
+
+**接口地址**: \`GET /api/user/:id\`
+
+**请求参数**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| id | string | 是 | 用户ID |
+
+**返回示例**:
+
+\`\`\`json
+{
+  "code": 200,
+  "data": {
+    "id": "123456",
+    "username": "testuser",
+    "email": "test@example.com"
+  }
+}
+\`\`\`
+
+### 2. 创建用户
+
+**接口地址**: \`POST /api/user\`
+
+**请求体**:
+
+\`\`\`json
+{
+  "username": "newuser",
+  "email": "new@example.com",
+  "password": "password123"
+}
+\`\`\`
+
+## 错误码
+
+| 错误码 | 说明 |
+|--------|------|
+| 200 | 成功 |
+| 400 | 参数错误 |
+| 401 | 未授权 |
+| 404 | 资源不存在 |
+| 500 | 服务器错误 |
+
+> **注意**: 请妥善保管您的 API Key，避免泄露。`,
+
+            tutorial: `# 快速开始教程
+
+欢迎使用 ChenLian® 开放平台！本教程将帮助您快速上手。
+
+## 准备工作
+
+在开始之前，请确保您已经：
+
+- [x] 注册账号
+- [x] 获取 API Key
+- [ ] 下载 SDK（可选）
+
+## 第一步：安装 SDK
+
+### JavaScript / Node.js
+
+\`\`\`bash
+npm install chenlian-sdk
+\`\`\`
+
+### Python
+
+\`\`\`bash
+pip install chenlian-sdk
+\`\`\`
+
+## 第二步：初始化
+
+### JavaScript 示例
+
+\`\`\`javascript
+const ChenLian = require('chenlian-sdk');
+
+const client = new ChenLian({
+  apiKey: 'YOUR_API_KEY',
+  apiSecret: 'YOUR_API_SECRET'
+});
+\`\`\`
+
+### Python 示例
+
+\`\`\`python
+from chenlian import Client
+
+client = Client(
+    api_key='YOUR_API_KEY',
+    api_secret='YOUR_API_SECRET'
+)
+\`\`\`
+
+## 第三步：发起第一个请求
+
+\`\`\`javascript
+// 获取用户信息
+client.user.getInfo('123456')
+  .then(user => {
+    console.log('用户名:', user.username);
+  })
+  .catch(error => {
+    console.error('错误:', error.message);
+  });
+\`\`\`
+
+## 常见问题
+
+### Q: 如何获取 API Key?
+
+A: 登录控制台后，在"开发者设置"页面可以创建和管理 API Key。
+
+### Q: API 调用频率限制是多少?
+
+A: 默认限制为每分钟 100 次。如需提高限制，请联系技术支持。
+
+## 下一步
+
+- 查看完整的 [API 文档](docs.html)
+- 浏览[示例代码](https://github.com/example)
+- 加入[开发者社区](https://community.example.com)`,
+
+            changelog: `# 更新日志
+
+## [v2.1.0] - 2026-01-11
+
+### ✨ 新增
+
+- 添加 GitHub 风格主题
+- 支持 Markdown 文档渲染
+- 新增 Markdown 演示页面
+
+### 🎨 改进
+
+- 简化 UI 设计，采用更清爽的 GitHub 风格
+- 优化移动端显示效果
+- 改进代码块语法高亮
+
+### 🐛 修复
+
+- 修复侧边栏滚动问题
+- 修复表格在小屏幕上的显示
+- 修复模态框关闭按钮的样式
+
+---
+
+## [v2.0.0] - 2026-01-01
+
+### ✨ 新增
+
+- 全新的文档系统
+- 支持 Mermaid 流程图
+- 动态 API 注册机制
+
+### 🎨 改进
+
+- 重新设计整体 UI
+- 优化页面加载速度
+- 改进代码结构
+
+### ⚠️ 破坏性变更
+
+- API 路径从 \`/v1/\` 变更为 \`/api/\`
+- 部分接口参数名称调整
+
+---
+
+## [v1.5.0] - 2025-12-15
+
+### ✨ 新增
+
+- 添加用户管理接口
+- 支持批量操作
+
+### 🐛 修复
+
+- 修复分页查询问题
+- 修复并发请求时的错误
+
+---
+
+## [v1.0.0] - 2025-12-01
+
+### ✨ 初始发布
+
+- 基础 API 接口
+- 用户认证系统
+- SDK 下载功能
+
+---
+
+**图例说明:**
+
+- ✨ 新增功能
+- 🎨 改进优化
+- 🐛 Bug 修复
+- ⚠️ 破坏性变更
+- 📝 文档更新
+- 🔒 安全修复`
+        };
+
+        function loadExample(type) {
+            const content = examples[type];
+            if (content) {
+                window.renderMarkdownDoc(content, 'markdownContent');
+            }
+        }
+    </script>
+</body>
+</html>
