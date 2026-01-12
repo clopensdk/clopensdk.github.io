@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebAPI文档 - ChenLian® 开放平台</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">ChenLian®开放平台</a>
+        <ul class="nav-menu">
+          <li><a href="index.html">首页</a></li>
+          <li><a href="overview.html">概述</a></li>
+          <li><a href="api-guide.html" class="active">API文档</a></li>
+          <li><a href="javascript:void(0)" onclick="openDownloadModal()">下载</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="docs-container">
+      <!-- 左侧导航 -->
+      <aside class="sidebar">
+        <div class="sidebar-content">
+          <div style="margin-bottom: 1rem; padding: 0.75rem; background: #f0fdf4; border-left: 3px solid #10b981; border-radius: 4px;">
+            <strong style="color: #10b981;">🌐 WebAPI</strong>
+            <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+              <a href="c-api.html" style="color: var(--secondary-color); text-decoration: none;">
+                切换到 C API →
+              </a>
+            </div>
+          </div>
+          <h3>API列表</h3>
+          <ul class="api-list" id="apiList">
+            <!-- 动态生成 -->
+          </ul>
+        </div>
+      </aside>
+
+      <!-- 右侧内容区 -->
+      <main class="content">
+        <div id="apiContent" class="markdown-body">
+          <h1>WebAPI 接口文档</h1>
+          <p>请从左侧列表选择要查看的 WebAPI 接口。</p>
+          <div style="background: #f8fafc; border-left: 4px solid #10b981; padding: 1rem; margin: 1.5rem 0; border-radius: 4px;">
+            <h3 style="margin-top: 0; color: #10b981;">🌐 关于 WebAPI</h3>
+            <p>WebAPI 基于 RESTful 设计理念，提供标准的 HTTP 接口，适用于各种平台和编程语言。</p>
+            <ul>
+              <li>支持 JSON 格式的请求和响应</li>
+              <li>标准的 HTTP 状态码</li>
+              <li>OAuth 2.0 认证机制</li>
+              <li>完善的限流和监控</li>
+            </ul>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- 核心脚本 -->
+    <script src="footer.js"></script>
+    <script src="script.js"></script>
+
+    <!-- Mermaid 流程图库 -->
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ 
+        startOnLoad: false,
+        theme: 'default',
+        themeVariables: {
+          primaryColor: '#2563eb',
+          primaryTextColor: '#fff',
+          primaryBorderColor: '#1e40af',
+          lineColor: '#64748b',
+          secondaryColor: '#f8fafc',
+          tertiaryColor: '#e2e8f0'
+        }
+      });
+      window.mermaid = mermaid;
+    </script>
+
+    <!-- API配置 - 只加载 WebAPI 相关的接口 -->
+    <script>
+      // 这里可以配置专门的 WebAPI 路径
+      const apiPaths = ["sdk_init"]; // 示例：WebAPI 相关的配置路径
+      
+      (function () {
+        let loadedCount = 0;
+        let totalCount = apiPaths.length;
+
+        console.log(`开始加载 ${totalCount} 个 WebAPI 配置...`);
+
+        apiPaths.forEach(function (apiPath) {
+          const script = document.createElement("script");
+          script.src = `sdks/${apiPath}/api.js`;
+          script.onload = function () {
+            loadedCount++;
+            if (loadedCount === totalCount) {
+              console.log(
+                `✓ 所有 WebAPI 加载完成！共 ${window.APIRegistry.getAll().length} 个接口`
+              );
+            }
+          };
+          script.onerror = function () {
+            console.error(`✗ 加载失败: sdks/${apiPath}/api.js`);
+          };
+          document.head.appendChild(script);
+        });
+      })();
+    </script>
+
+    <!-- 下载模态框 -->
+    <div id="downloadModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>SDK 下载</h2>
+          <span class="close-btn" onclick="closeDownloadModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <p style="text-align: center; margin-bottom: 2rem; color: var(--secondary-color);">选择适合您操作系统的SDK版本进行下载</p>
+          <div class="sdk-download-grid">
+            <div class="sdk-card">
+              <div class="sdk-icon">🖥️</div>
+              <h3>Windows SDK</h3>
+              <p class="sdk-version">v1.0.0</p>
+              <p class="sdk-desc">支持 Windows 10/11</p>
+              <button class="btn-download" onclick="downloadSDK('windows')">
+                <span class="download-icon">⬇</span> 下载
+              </button>
+            </div>
+
+            <div class="sdk-card sdk-card-disabled">
+              <div class="sdk-icon">🐧</div>
+              <h3>Linux SDK</h3>
+              <p class="sdk-version">v1.0.0</p>
+              <p class="sdk-desc">暂不支持</p>
+              <button class="btn-download" disabled>
+                <span class="download-icon">⬇</span> 下载
+              </button>
+            </div>
+
+            <div class="sdk-card sdk-card-disabled">
+              <div class="sdk-icon"></div>
+              <h3>macOS SDK</h3>
+              <p class="sdk-version">v1.0.0</p>
+              <p class="sdk-desc">暂不支持</p>
+              <button class="btn-download" disabled>
+                <span class="download-icon">⬇</span> 下载
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

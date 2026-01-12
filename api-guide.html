@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API 文档导航 - ChenLian® 开放平台</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .api-guide-container {
+        min-height: calc(100vh - 60px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 2rem;
+      }
+
+      .guide-content {
+        max-width: 1000px;
+        width: 100%;
+      }
+
+      .guide-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .guide-header h1 {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .guide-header p {
+        font-size: 1.1rem;
+        color: var(--secondary-color);
+      }
+
+      .api-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .api-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: 2px solid transparent;
+      }
+
+      .api-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        border-color: var(--primary-color);
+      }
+
+      .api-card-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      .api-card h2 {
+        font-size: 1.8rem;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      .api-card p {
+        color: var(--secondary-color);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      .api-card-features {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 1.5rem;
+      }
+
+      .api-card-features li {
+        padding: 0.5rem 0;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+      }
+
+      .api-card-features li:before {
+        content: "✓";
+        color: var(--primary-color);
+        font-weight: bold;
+        margin-right: 0.5rem;
+      }
+
+      .api-card-btn {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .api-card-btn:hover {
+        background: #1e40af;
+      }
+
+      .comparison-note {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .comparison-note h3 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .comparison-note p {
+        color: var(--secondary-color);
+        line-height: 1.6;
+      }
+
+      @media (max-width: 768px) {
+        .api-cards {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">ChenLian®开放平台</a>
+        <ul class="nav-menu">
+          <li><a href="index.html">首页</a></li>
+          <li><a href="overview.html">概述</a></li>
+          <li><a href="api-guide.html" class="active">API文档</a></li>
+          <li><a href="javascript:void(0)" onclick="openDownloadModal()">下载</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="api-guide-container">
+      <div class="guide-content">
+        <div class="guide-header">
+          <h1>选择 API 类型</h1>
+          <p>ChenLian® 开放平台提供两种类型的 API 接口，请根据您的开发需求选择</p>
+        </div>
+
+        <div class="api-cards">
+          <!-- C API Card -->
+          <div class="api-card" onclick="window.location.href='c-api.html'">
+            <div class="api-card-icon">⚙️</div>
+            <h2>C API</h2>
+            <p>原生 C 语言接口，提供高性能的底层系统调用能力</p>
+            <ul class="api-card-features">
+              <li>高性能原生调用</li>
+              <li>底层系统集成</li>
+              <li>适合桌面应用开发</li>
+              <li>支持 Windows/Linux/macOS</li>
+            </ul>
+            <button class="api-card-btn">查看 C API 文档</button>
+          </div>
+
+          <!-- WebAPI Card -->
+          <div class="api-card" onclick="window.location.href='webapi.html'">
+            <div class="api-card-icon">🌐</div>
+            <h2>WebAPI</h2>
+            <p>基于 HTTP/REST 的 Web 接口，适合跨平台和 Web 应用集成</p>
+            <ul class="api-card-features">
+              <li>跨平台兼容性强</li>
+              <li>RESTful 设计风格</li>
+              <li>适合 Web 和移动端</li>
+              <li>易于集成和测试</li>
+            </ul>
+            <button class="api-card-btn">查看 WebAPI 文档</button>
+          </div>
+        </div>
+
+        <div class="comparison-note">
+          <h3>💡 如何选择？</h3>
+          <p>
+            如果您正在开发桌面应用或需要高性能的系统集成，推荐使用 <strong>C API</strong>；<br/>
+            如果您正在开发 Web 应用、移动应用或需要跨平台支持，推荐使用 <strong>WebAPI</strong>。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 下载模态框 -->
+    <div id="downloadModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>SDK 下载</h2>
+          <span class="close-btn" onclick="closeDownloadModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <p style="text-align: center; margin-bottom: 2rem; color: var(--secondary-color);">选择适合您操作系统的SDK版本进行下载</p>
+          <div class="sdk-download-grid">
+            <div class="sdk-card">
+              <div class="sdk-icon">🖥️</div>
+              <h3>Windows SDK</h3>
+              <p class="sdk-version">v1.0.0</p>
+              <p class="sdk-desc">支持 Windows 10/11</p>
+              <button class="btn-download" onclick="downloadSDK('windows')">
+                <span class="download-icon">⬇</span> 下载
+              </button>
+            </div>
+
+            <div class="sdk-card sdk-card-disabled">
+              <div class="sdk-icon">🐧</div>
+              <h3>Linux SDK</h3>
+              <p class="sdk-version">v1.0.0</p>
+              <p class="sdk-desc">暂不支持</p>
+              <button class="btn-download" disabled>
+                <span class="download-icon">⬇</span> 下载
+              </button>
+            </div>
+
+            <div class="sdk-card sdk-card-disabled">
+              <div class="sdk-icon"></div>
+              <h3>macOS SDK</h3>
+              <p class="sdk-version">v1.0.0</p>
+              <p class="sdk-desc">暂不支持</p>
+              <button class="btn-download" disabled>
+                <span class="download-icon">⬇</span> 下载
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="footer.js"></script>
+    <script>
+      // 打开下载模态框
+      function openDownloadModal() {
+        document.getElementById('downloadModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+
+      // 关闭下载模态框
+      function closeDownloadModal() {
+        document.getElementById('downloadModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+
+      // 下载SDK
+      function downloadSDK(platform) {
+        alert(`开始下载 ${platform} SDK...`);
+        // 这里可以添加实际的下载逻辑
+      }
+
+      // 点击模态框外部关闭
+      window.onclick = function(event) {
+        const modal = document.getElementById('downloadModal');
+        if (event.target === modal) {
+          closeDownloadModal();
+        }
+      };
+    </script>
+  </body>
+</html>
